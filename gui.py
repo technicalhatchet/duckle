@@ -29,9 +29,10 @@ class BankStatementApp:
 
         self.logo = PhotoImage(file="Duckle256.png")  # Make sure "logo.png" is in the same folder
 
+        self.root.iconphoto(True, PhotoImage(file="Duckle256.png"))
 
 
-        root.iconphoto(True, PhotoImage(file="Duckle256.png"))
+
 
         # Configure the root window
         self.root.title("Duckle")

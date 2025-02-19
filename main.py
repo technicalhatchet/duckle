@@ -1,13 +1,12 @@
-from tkinter import Tk, messagebox
+from tkinter import Tk
 import argparse
 import sys
 import subprocess
 import threading
 import webbrowser
-from gui import BankStatementApp
+from database_handler import DatabaseHandler
 from duckle_parser import BankStatementParser
 from file_handler import FileHandler
-from database_handler import DatabaseHandler
 
 def run_flask_server():
     """Run the Flask server in a separate process."""
@@ -17,8 +16,8 @@ def run_flask_server():
 def main():
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Duckle Bank Statement Parser')
-    parser.add_argument('--gui', choices=['tkinter', 'react'], default='tkinter',
-                        help='Choose GUI: tkinter (default) or react')
+    parser.add_argument('--gui', choices=['tkinter', 'pyqt5', 'react'], default='tkinter',
+                        help='Choose GUI: tkinter (default), pyqt5, or react')
     args = parser.parse_args()
 
     # Initialize the parser, database handler, and file handler
@@ -30,19 +29,24 @@ def main():
         # Start Flask server in a separate thread
         server_thread = threading.Thread(target=run_flask_server, daemon=True)
         server_thread.start()
-        
+
         # Open web browser
         webbrowser.open('http://localhost:5000')
-        
+
         print("React GUI started. Press Ctrl+C to exit.")
         try:
-            # Keep the main thread alive
             server_thread.join()
         except KeyboardInterrupt:
             print("Shutting down...")
             sys.exit(0)
+
+    elif args.gui == 'pyqt5':
+        from pyqt5_gui import main as pyqt5_main
+        pyqt5_main()
+
     else:
         # Start Tkinter GUI
+        from gui import BankStatementApp
         root = Tk()
         app = BankStatementApp(root, file_handler, parser_instance, db_handler)
         root.mainloop()
