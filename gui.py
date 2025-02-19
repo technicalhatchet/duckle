@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, Label, PhotoImage
 from tkinter import messagebox, filedialog
 import pandas as pd
 from file_handler import FileHandler
@@ -27,8 +27,15 @@ class BankStatementApp:
         self.db_handler = db_handler
         self.file_handler = file_handler
 
+        self.logo = PhotoImage(file="Duckle256.png")  # Make sure "logo.png" is in the same folder
+
+
+
+        root.iconphoto(True, PhotoImage(file="Duckle256.png"))
+
         # Configure the root window
         self.root.title("Duckle")
+        self.root.iconbitmap("Duckle256.ico") # Set window icon
         self.root.geometry("1200x800")
         self.root.configure(bg="#f0f2f5")  # Light gray background
 
